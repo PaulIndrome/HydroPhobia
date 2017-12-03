@@ -10,13 +10,12 @@ public class particleExplosionScript : MonoBehaviour {
 	private float particleSystemDuration;
 
 	public void Start(){
-		Destroy(gameObject, 1.2f);
+		Destroy(gameObject, 0.25f);
 	}
 
 	public void setTriggerObject(GameObject player){
 		playerObject = player;
 		transform.LookAt(playerObject.transform);
-		transform.Rotate(Vector3.forward, 180f);
 	}
 
 

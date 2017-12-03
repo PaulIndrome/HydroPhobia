@@ -7,33 +7,32 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
 	public Transform child3dObject;
 	public float deltaSensitivity = 0.5f;
-	//private Rigidbody rigBod;
+	private Rigidbody rigBod;
 
 	private int rainDropHits = 0;
 
 
 	public void Start(){
 		child3dObject = transform.GetChild(0);
-		//rigBod = GetComponent<Rigidbody>();
+		rigBod = GetComponent<Rigidbody>();
 	}
 
 
 	public virtual void OnPointerDown(PointerEventData ped){
 		Debug.Log(ped.pointerId);
-		//rigBod.mass = 0;
-		//rigBod.useGravity = false;
+		rigBod.mass = 0;
+		rigBod.useGravity = false;
 	}
 
 	public virtual void OnDrag(PointerEventData ped){
 			Vector2 temperedDelta = ped.delta * deltaSensitivity;
 			transform.Translate(temperedDelta);
-			//transform.position = Vector3.Lerp(transform.position, ped.pointerCurrentRaycast.worldPosition, 0.1f);
 			child3dObject.Rotate(new Vector3(ped.delta.x * (1 + Random.value), ped.delta.x * (1 + Random.value), Random.value*10));
 	}
 
 	public virtual void OnPointerUp(PointerEventData ped){
-		//rigBod.mass = 1;
-		//rigBod.useGravity = true;
+		rigBod.mass = 1;
+		rigBod.useGravity = true;
 	}
 
 }
