@@ -31,7 +31,7 @@ public class BigParticleSpawn : MonoBehaviour {
 
 	public void spawnBigParticle(){
 		float xPos = Random.Range(xMin,xMax);
-		Instantiate(bigParticlePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
+		Instantiate(bigParticlePrefab, new Vector3(transform.position.x + xPos, yPos, 0), Quaternion.identity);
 		
 	}
 }

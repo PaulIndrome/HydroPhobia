@@ -13,12 +13,14 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	[SerializeField]
 	private bool particleHitThisFrame, isDragging = false;
 
-	private float rigBodDefaultMass;
+	private string playerNum;
+
 	private Rigidbody rigBod;
 	private Camera mainCam;
-
 	private Vector3 lastIntersection;
 	private Vector3 pointerInWorld;
+	private Vector3 playerTwoRestingPos;
+	private Vector3 velocity = Vector3.zero;
 
 	
 
@@ -27,18 +29,18 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		child3dObject = transform.GetChild(0);
 		rigBod = GetComponent<Rigidbody>();
 		mainCam = Camera.main;
-		rigBodDefaultMass = rigBod.mass;
 		lastIntersection = Vector3.zero;
-		
+		playerNum = tag;
+		playerTwoRestingPos = new Vector3(0,-5,0);
+		StartCoroutine(LerpToRestingPos());
 	}
 
 	public virtual void OnPointerDown(PointerEventData ped){
 		//Debug.Log("Down at " + ped.position);
 		pointerInWorld = transform.position;
-		rigBod.mass = 0;
-		rigBod.useGravity = false;
 		rigBod.velocity = Vector3.zero;
 		isDragging = true;
+		StopCoroutine(LerpToRestingPos());
 		StartCoroutine(LerpToPointer());
 	}
 
@@ -52,17 +54,16 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
 	public virtual void OnPointerUp(PointerEventData ped){
 		//Debug.Log("Up at " + ped.position);
-		rigBod.mass = rigBodDefaultMass;
-		rigBod.useGravity = true;
 		isDragging = false;
 		StopCoroutine(LerpToPointer());
+		StartCoroutine(LerpToRestingPos());
 	}
 
 	public void BigParticleHitPlayerOne(){
 		//Debug.Log("Big hit Player01");
 		
 		if(!RecentlyHitByParticle()){
-			Debug.Log("Big hit Player01 anew");
+			//Debug.Log("Big hit Player01 anew");
 		}
 	}
 
@@ -70,7 +71,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		//Debug.Log("Big hit Player02");
 		
 		if(!RecentlyHitByParticle()){
-			Debug.Log("Big hit Player02 anew");
+			//Debug.Log("Big hit Player02 anew");
 		}
 	}
 
@@ -78,7 +79,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		//Debug.Log("Small hit Player01");
 
 		if(!RecentlyHitByParticle()){
-			Debug.Log("Small hit Player01 hard");
+			//Debug.Log("Small hit Player01 anew");
 		}
 	}
 
@@ -86,7 +87,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		//Debug.Log("Small hit Player02");
 		
 		if(!RecentlyHitByParticle()){
-			Debug.Log("Small hit Player02 hard");
+			//Debug.Log("Small hit Player02 anew");
 		}
 	}
 
@@ -102,7 +103,6 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
 	IEnumerator ParticleCollisionTimer(){
 			yield return new WaitForSeconds(hitDelay);
-			//Debug.Log("Boop");
 			particleHitThisFrame = false;
 			yield return null;
 	}
@@ -116,6 +116,27 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, rigBod.velocity.magnitude);	
 			 */
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, Time.deltaTime*lerpToPointerSpeed);
+			yield return null;
+		}
+		yield return null;
+	}
+
+	IEnumerator LerpToRestingPos(){
+		while(!isDragging){
+			if(CompareTag("Player01")){
+				if((Vector3.zero - transform.position).magnitude < 0.05f){
+					transform.position = Vector3.zero;
+					break;
+				}
+				transform.position = Vector3.SmoothDamp(transform.position, Vector3.zero, ref velocity, 2.0f);
+			}
+			else{
+				if((playerTwoRestingPos - transform.position).magnitude < 0.05f){
+					transform.position = playerTwoRestingPos;
+					break;
+				}
+				transform.position = Vector3.SmoothDamp(transform.position, playerTwoRestingPos, ref velocity, 2.0f);
+			}
 			yield return null;
 		}
 		yield return null;
