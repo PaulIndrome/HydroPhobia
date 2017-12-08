@@ -66,6 +66,7 @@ public class BigParticle : MonoBehaviour {
 			}
 			yield return null;
 		}
+		yield break;
 	}
 
 

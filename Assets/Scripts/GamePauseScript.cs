@@ -19,7 +19,9 @@ public class GamePauseScript : MonoBehaviour, IPointerDownHandler {
 	
 
 	public void OnPointerDown(PointerEventData ped){
-		if(!doubleTapInitialized){
+		if(NewGameManager.gameOver){
+			ForceMenu();
+		} else if(!doubleTapInitialized){
 			doubleTapInitialized = true;
 			firstTapTime = Time.time;
 			StartCoroutine(ResetDoubleTapInit());
@@ -34,6 +36,10 @@ public class GamePauseScript : MonoBehaviour, IPointerDownHandler {
 		menuOpened = !menuOpened;
 		Time.timeScale = (menuOpened) ? 0 : 1;
 		IngameMenu.SetActive(menuOpened);
+	}
+
+	public void ForceMenu(){
+		IngameMenu.SetActive(true);
 	}
 
 	IEnumerator ResetDoubleTapInit(){

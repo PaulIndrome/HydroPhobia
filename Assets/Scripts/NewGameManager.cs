@@ -13,6 +13,7 @@ public class NewGameManager : MonoBehaviour{
 	public static int smallParticlesToReleaseFirst, smallParticlesToReleaseNext, smallParticlesReleasedLast;
 
 	public static bool smallParticlesActive = false;
+	public static bool gameOver = false;
 
 	private static List<GameObject> smallParticleReleaserList = new List<GameObject>();
 
@@ -23,6 +24,7 @@ public class NewGameManager : MonoBehaviour{
 			Destroy(gameObject);
 		}
 		smallParticlesActive = false;
+		gameOver = false;
 
 		smallParticleReleaserList.Clear();
 
@@ -44,6 +46,7 @@ public class NewGameManager : MonoBehaviour{
 		if(smallParticlesReleased == 1 && smallParticlesCaught == 0){
 			Debug.Log("GameOver, big guy has starved");
 			Time.timeScale = 0;
+			gameOver = true;
 		} else if (smallParticlesReleased >= 2 && smallParticlesCaught == 0){
 			smallParticlesToReleaseNext /= 2;
 		} else if (smallParticlesCaught >= smallParticlesReleased){
