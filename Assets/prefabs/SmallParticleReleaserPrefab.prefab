@@ -53,6 +53,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smallParticlesReleased: 0
   smallParticlesCaught: 0
-  smallParticleSprayDelay: 0.5
+  smallParticleSprayDelay: 0.1
+  initialForceMultiplier: 1
+  minXRotation: 0
+  maxXRotation: 0
   smallParticlePrefab: {fileID: 1691799891489248, guid: 88cbf92a5b0616147bc610692b49e959,
     type: 2}

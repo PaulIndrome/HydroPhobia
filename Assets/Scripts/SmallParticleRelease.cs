@@ -7,7 +7,9 @@ public class SmallParticleRelease : MonoBehaviour {
 	[SerializeField]
 	private int smallParticlesReleased, smallParticlesCaught;
 	[SerializeField]
-	private float smallParticleSprayDelay;
+	private float smallParticleSprayDelay, initialForceMultiplier;
+
+	public float minXRotation, maxXRotation;
 
 	[SerializeField]
 	private GameObject smallParticlePrefab;
@@ -16,6 +18,7 @@ public class SmallParticleRelease : MonoBehaviour {
 
 	private Vector3 smallParticleSpawnPoint;
 
+
 	public void Start(){
 		NewGameManager.smallParticlesActive = true;
 	}
@@ -23,6 +26,8 @@ public class SmallParticleRelease : MonoBehaviour {
 	public void RotateSmallParticleReleaserTowards(Vector3 playerPosition){
 		transform.LookAt(playerPosition);
 		transform.Translate(0,0,-1);
+		minXRotation = transform.eulerAngles.x - 25;
+		maxXRotation = minXRotation + 50;
 		StartSmallParticleRelease(NewGameManager.smallParticlesToReleaseNext);
 	}
 
@@ -56,14 +61,23 @@ public class SmallParticleRelease : MonoBehaviour {
 
 	IEnumerator SpraySmallParticles(){
 		for(int i = 0; i<smallParticlesReleased;i++){
-			GameObject smallParticle = Instantiate(smallParticlePrefab, transform.position, Quaternion.identity);
-			smallParticle.transform.SetParent(gameObject.transform);
-			smallParticle.GetComponent<SmallParticle>().setMother(this);
-			smallParticle.GetComponent<Rigidbody>().AddForce(Vector3.back);
-			smallParticlesList.Add(smallParticle);
+			SpraySmallParticle();
 			yield return new WaitForSeconds(smallParticleSprayDelay);
 		}
 		yield return null;
+	}
+
+	public void OnDrawGizmos(){
+		Gizmos.DrawRay(transform.position, transform.forward);
+	}
+
+	public void SpraySmallParticle(){
+		transform.eulerAngles = new Vector3(Mathf.Lerp(minXRotation,maxXRotation, Random.Range(0f,1f)), transform.eulerAngles.y, transform.eulerAngles.z);
+		GameObject smallParticle = Instantiate(smallParticlePrefab, transform.position, transform.rotation);
+		smallParticle.GetComponent<SmallParticle>().setMother(this);
+		Vector3 sprayDirection = new Vector3(0, Random.Range(-1,1), Random.Range(-1,-2) * initialForceMultiplier).normalized;
+		smallParticle.GetComponent<Rigidbody>().AddForce(-transform.forward * initialForceMultiplier, ForceMode.Impulse);
+		smallParticlesList.Add(smallParticle);
 	}
 
 }

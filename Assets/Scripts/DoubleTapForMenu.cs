@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GamePauseScript : MonoBehaviour, IPointerDownHandler {
+public class DoubleTapForMenu : MonoBehaviour, IPointerDownHandler {
 
 	[SerializeField]
 	private bool menuOpened = false;
@@ -16,20 +16,11 @@ public class GamePauseScript : MonoBehaviour, IPointerDownHandler {
 	private float timeBetweenTaps = 0.2f;
 	
 	[SerializeField]
-	private GameObject IngameMenu;
-
-	private Image gameOverImage;
-
-	public void Awake(){
-		gameOverImage = IngameMenu.GetComponent<Image>();
-		gameOverImage.enabled = false;
-	}
-	
+	private GameObject mainMenu, doubleTapInfoText;
 
 	public void OnPointerDown(PointerEventData ped){
-		if(NewGameManager.gameOver){
-			ForceMenu();
-		} else if(!doubleTapInitialized){
+		Debug.Log("Tap");
+		if(!doubleTapInitialized){
 			doubleTapInitialized = true;
 			firstTapTime = Time.time;
 			StartCoroutine(ResetDoubleTapInit());
@@ -42,18 +33,19 @@ public class GamePauseScript : MonoBehaviour, IPointerDownHandler {
 	public void PauseUnpauseGame(){
 		doubleTapInitialized = false;
 		menuOpened = !menuOpened;
-		Time.timeScale = (menuOpened) ? 0 : 1;
-		IngameMenu.SetActive(menuOpened);
-	}
-
-	public void ForceMenu(){
-		IngameMenu.SetActive(true);
-		gameOverImage.enabled = true;
+		foreach(Transform child in mainMenu.transform){
+			child.gameObject.SetActive(menuOpened);
+		}
 	}
 
 	IEnumerator ResetDoubleTapInit(){
 		yield return new WaitForSecondsRealtime(timeBetweenTaps+0.05f);
 		doubleTapInitialized = false;
+		yield break;
+	}
+
+	public void ToggleDoubleTapInfoText(){
+		doubleTapInfoText.SetActive(!doubleTapInfoText.activeSelf);
 	}
 	
 }

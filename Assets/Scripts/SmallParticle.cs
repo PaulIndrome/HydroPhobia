@@ -14,11 +14,14 @@ public class SmallParticle : MonoBehaviour {
 	private SmallParticleRelease mother;
 
 	private SphereCollider particleCollider;
+	private Rigidbody rigBod;
 
 	public bool hasCollided = false;
 
 	public void Awake(){
 		particleCollider = GetComponent<SphereCollider>();
+		rigBod = GetComponent<Rigidbody>();
+		rigBod.mass = Random.Range(0.4f, 0.9f);
 
 		player01 = GameObject.FindGameObjectWithTag("Player01").GetComponent<PlayerScript>();
 		player02 = GameObject.FindGameObjectWithTag("Player02").GetComponent<PlayerScript>();
@@ -28,13 +31,11 @@ public class SmallParticle : MonoBehaviour {
 	public void Start(){
 		if(!player01 || !player02)
 			Debug.LogError("Players not set up for BigParticlePrefab");
-
-		
-		StartCoroutine(MoveAndCheckForOutOfScreen());
 	}
 
 	public void setMother(SmallParticleRelease spr){
 		mother = spr;
+		StartCoroutine(MoveAndCheckForOutOfScreen());
 	}
 
 	public void OnCollisionEnter(Collision col){
@@ -57,13 +58,18 @@ public class SmallParticle : MonoBehaviour {
 
 	IEnumerator MoveAndCheckForOutOfScreen(){
 		while(gameObject.activeSelf){
-			transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y - fallingDelta, 0), Time.deltaTime);
+			//transform.Translate(Vector3.down * Time.deltaTime * fallingDelta, Space.World);
 			if(transform.position.y <= -6){
 				mother.SmallParticleDestroyed(gameObject);
 				Destroy(gameObject);
 			}
 			yield return null;
 		}
+		yield break;
+	}
+
+	public void OnDrawGizmos(){
+		Gizmos.DrawRay(transform.position, transform.forward);
 	}
 
 
