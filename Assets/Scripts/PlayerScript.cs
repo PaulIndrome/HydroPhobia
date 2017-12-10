@@ -13,11 +13,8 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	[SerializeField]
 	private bool particleHitThisFrame, isDragging = false;
 
-	private string playerNum;
-
 	private Rigidbody rigBod;
 	private Camera mainCam;
-	private Vector3 lastIntersection;
 	private Vector3 pointerInWorld;
 	private Vector3 playerTwoRestingPos;
 	private Vector3 velocity = Vector3.zero;
@@ -29,8 +26,6 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		child3dObject = transform.GetChild(0);
 		rigBod = GetComponent<Rigidbody>();
 		mainCam = Camera.main;
-		lastIntersection = Vector3.zero;
-		playerNum = tag;
 		playerTwoRestingPos = new Vector3(0,-5,0);
 		StartCoroutine(LerpToRestingPos());
 	}
@@ -68,11 +63,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	}
 
 	public void BigParticleHitPlayerTwo(){
-		//Debug.Log("Big hit Player02");
-		
-		if(!RecentlyHitByParticle()){
-			//Debug.Log("Big hit Player02 anew");
-		}
+		NewGameManager.instance.ForceGameOver();
 	}
 
 	public void SmallParticleHitPlayerOne(){
@@ -99,6 +90,14 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 		} else {
 			return true;
 		}
+	}
+
+	public void EnableControls(){
+		this.enabled = true;
+	}
+
+	public void DisableControls(){
+		this.enabled = false;
 	}
 
 	IEnumerator ParticleCollisionTimer(){

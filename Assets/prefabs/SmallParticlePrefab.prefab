@@ -142,7 +142,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player01: {fileID: 0}
   player02: {fileID: 0}
-  fallingDelta: 2
   mother: {fileID: 0}
   hasCollided: 0
 --- !u!135 &135111231931607746

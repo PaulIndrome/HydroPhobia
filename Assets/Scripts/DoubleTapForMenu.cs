@@ -19,7 +19,6 @@ public class DoubleTapForMenu : MonoBehaviour, IPointerDownHandler {
 	private GameObject mainMenu, doubleTapInfoText;
 
 	public void OnPointerDown(PointerEventData ped){
-		Debug.Log("Tap");
 		if(!doubleTapInitialized){
 			doubleTapInitialized = true;
 			firstTapTime = Time.time;

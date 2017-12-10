@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewGameManager : MonoBehaviour{
+public class SmallParticleReleaseHandler : MonoBehaviour {
 
-	public static NewGameManager instance = null;
+	public static SmallParticleReleaseHandler instance {get; private set;}
 
 	[SerializeField]
 	private static float bigParticleFallSpeed, smallParticleFallSpeed, bigParticleDelay;
@@ -13,22 +13,25 @@ public class NewGameManager : MonoBehaviour{
 	public static int smallParticlesToReleaseFirst, smallParticlesToReleaseNext, smallParticlesReleasedLast;
 
 	public static bool smallParticlesActive = false;
-	public static bool gameOver = false;
 
 	private static List<GameObject> smallParticleReleaserList = new List<GameObject>();
 
-	public void Start(){
+	public void Awake(){
 		if(instance == null){
 			instance = this;
 		} else if (instance != null){
 			Destroy(gameObject);
 		}
+
+		Reset();
+	}
+
+	public void Reset(){
 		smallParticlesActive = false;
-		gameOver = false;
 
 		smallParticleReleaserList.Clear();
 
-		smallParticlesToReleaseFirst = 10;
+		smallParticlesToReleaseFirst = 5;
 
 		smallParticlesToReleaseNext = smallParticlesToReleaseFirst;
 	}
@@ -40,13 +43,14 @@ public class NewGameManager : MonoBehaviour{
 	public static void SmallParticleReleaseFinished(GameObject finished){
 		smallParticleReleaserList.Remove(finished);
 		smallParticlesActive = false;
+		NewGameManager.instance.bigParticleReleaseHandler.bigParticleSpawn.ToggleDangerousParticles(false);
 	}
 
 	public static void ComputeSmallParticlesToReleaseNext(int smallParticlesReleased, int smallParticlesCaught){
 		if(smallParticlesReleased == 1 && smallParticlesCaught == 0){
 			Debug.Log("GameOver, big guy has starved");
 			Time.timeScale = 0;
-			gameOver = true;
+			NewGameManager.gameOver = true;
 		} else if (smallParticlesReleased >= 2 && smallParticlesCaught == 0){
 			smallParticlesToReleaseNext /= 2;
 		} else if (smallParticlesCaught >= smallParticlesReleased){
@@ -54,6 +58,6 @@ public class NewGameManager : MonoBehaviour{
 		} else {
 			smallParticlesToReleaseNext = smallParticlesCaught;
 		}
-		Debug.Log("Small Particles To Release Next: " + smallParticlesToReleaseNext);
+		//Debug.Log("Small Particles To Release Next: " + smallParticlesToReleaseNext);
 	}
 }

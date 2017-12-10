@@ -7,7 +7,6 @@ public class MainMenuCubesHandler : MonoBehaviour {
 	[SerializeField]
 	private float rotationChangeDelay = 5;
 	private float timeSpentRotatingSinceLastChange = 0;
-	private float outerRotationAngle = 1;
 
 	private Vector3 flairCubeOuterFinalPosition = new Vector3(1.5f, 0,0);
 	private Quaternion fromRotation;
@@ -26,8 +25,6 @@ public class MainMenuCubesHandler : MonoBehaviour {
 		toRotation = Random.rotationUniform;
 		fromRotation = flairCube.rotation;
 		fromRotationOuter = flairCubeOuterCarrier.rotation;
-		//timeSpentRotatingSinceLastChange = 0;
-		//rotationChangeDelay = 5;
 		StartCoroutine(RotateCubeRandomly());
 		StartCoroutine(ChangeRotationDirections());
 		StartCoroutine(PositionOuterCube());
@@ -48,11 +45,8 @@ public class MainMenuCubesHandler : MonoBehaviour {
 		while(flairCube.gameObject.activeSelf){
 			timeSpentRotatingSinceLastChange += Time.deltaTime;
 			float t = timeSpentRotatingSinceLastChange / rotationChangeDelay;
-			//Debug.Log(t);
 			flairCube.rotation = Quaternion.Slerp(fromRotation, toRotation, t);
 			flairCubeOuterCarrier.rotation = Quaternion.SlerpUnclamped(fromRotationOuter, Quaternion.Inverse(toRotation), t*4);
-			//outerRotationAngle = outerRotationAngle++ % 360;
-			//flairCubeOuter.RotateAround(transform.position, Vector3.forward, outerRotationAngle);
 			yield return null;
 		}
 		yield return null;

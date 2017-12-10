@@ -8,18 +8,13 @@ public class SmallParticle : MonoBehaviour {
 	private PlayerScript player01, player02;
 
 	[SerializeField]
-	private float fallingDelta = 1.0f;
-
-	[SerializeField]
 	private SmallParticleRelease mother;
 
-	private SphereCollider particleCollider;
 	private Rigidbody rigBod;
 
 	public bool hasCollided = false;
 
 	public void Awake(){
-		particleCollider = GetComponent<SphereCollider>();
 		rigBod = GetComponent<Rigidbody>();
 		rigBod.mass = Random.Range(0.4f, 0.9f);
 
@@ -58,7 +53,6 @@ public class SmallParticle : MonoBehaviour {
 
 	IEnumerator MoveAndCheckForOutOfScreen(){
 		while(gameObject.activeSelf){
-			//transform.Translate(Vector3.down * Time.deltaTime * fallingDelta, Space.World);
 			if(transform.position.y <= -6){
 				mother.SmallParticleDestroyed(gameObject);
 				Destroy(gameObject);
