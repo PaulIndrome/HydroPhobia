@@ -13,6 +13,8 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	[SerializeField]
 	private bool particleHitThisFrame, isDragging = false;
 
+	private bool playerControlActive = true;
+
 	private Rigidbody rigBod;
 	private Camera mainCam;
 	private Vector3 pointerInWorld;
@@ -31,27 +33,35 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	}
 
 	public virtual void OnPointerDown(PointerEventData ped){
-		//Debug.Log("Down at " + ped.position);
-		pointerInWorld = transform.position;
-		rigBod.velocity = Vector3.zero;
-		isDragging = true;
-		StopCoroutine(LerpToRestingPos());
-		StartCoroutine(LerpToPointer());
+		if(playerControlActive)
+		{
+			pointerInWorld = transform.position;
+			rigBod.velocity = Vector3.zero;
+			isDragging = true;
+			StopCoroutine(LerpToRestingPos());
+			StartCoroutine(LerpToPointer());
+		}
 	}
 
 	public virtual void OnDrag(PointerEventData ped){
-		pointerInWorld = ped.position;
-		pointerInWorld.z = 10;
-		pointerInWorld = mainCam.ScreenToWorldPoint(pointerInWorld);
-		//transform.position = pointerInWorld;
-		child3dObject.Rotate(new Vector3(ped.delta.x * (1 + Random.value), ped.delta.x * (1 + Random.value), Random.value*10));
+		if(playerControlActive)
+		{
+			pointerInWorld = ped.position;
+			pointerInWorld.z = 10;
+			pointerInWorld = mainCam.ScreenToWorldPoint(pointerInWorld);
+			//transform.position = pointerInWorld;
+			child3dObject.Rotate(new Vector3(ped.delta.x * (1 + Random.value), ped.delta.x * (1 + Random.value), Random.value*10));
+		}
 	}
 
 	public virtual void OnPointerUp(PointerEventData ped){
-		//Debug.Log("Up at " + ped.position);
-		isDragging = false;
-		StopCoroutine(LerpToPointer());
-		StartCoroutine(LerpToRestingPos());
+		if(playerControlActive)
+		{
+			//Debug.Log("Up at " + ped.position);
+			isDragging = false;
+			StopCoroutine(LerpToPointer());
+			StartCoroutine(LerpToRestingPos());
+		}
 	}
 
 	public void BigParticleHitPlayerOne(){
@@ -63,7 +73,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	}
 
 	public void BigParticleHitPlayerTwo(){
-		NewGameManager.instance.ForceGameOver();
+		return;
 	}
 
 	public void SmallParticleHitPlayerOne(){
@@ -93,17 +103,18 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	}
 
 	public void EnableControls(){
-		this.enabled = true;
+		playerControlActive = true;
 	}
 
 	public void DisableControls(){
-		this.enabled = false;
+		playerControlActive = false;
+		isDragging = false;
 	}
 
 	IEnumerator ParticleCollisionTimer(){
 			yield return new WaitForSeconds(hitDelay);
 			particleHitThisFrame = false;
-			yield return null;
+			yield break;
 	}
 
 	IEnumerator LerpToPointer(){
@@ -117,7 +128,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, Time.deltaTime*lerpToPointerSpeed);
 			yield return null;
 		}
-		yield return null;
+		yield break;
 	}
 
 	IEnumerator LerpToRestingPos(){
@@ -138,7 +149,7 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 			}
 			yield return null;
 		}
-		yield return null;
+		yield break;
 	}
 
 }

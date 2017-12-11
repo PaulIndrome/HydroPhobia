@@ -45,6 +45,8 @@ public class SmallParticle : MonoBehaviour {
 			mother.SmallParticleCaught(gameObject);
 			player02.SmallParticleHitPlayerTwo();
 			Destroy(gameObject);
+		} else if(collider.CompareTag("PlayerCage")){
+			rigBod.velocity = Vector3.Reflect(rigBod.velocity, col.contacts[0].normal)*1.2f;
 		} else {
 			mother.SmallParticleDestroyed(gameObject);
 			Destroy(gameObject);

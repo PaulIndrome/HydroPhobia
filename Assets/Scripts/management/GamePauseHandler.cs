@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 
+	private bool gameOver = false;
+
 	[SerializeField]
 	private bool menuOpened = false;
 	[SerializeField]
@@ -30,12 +32,16 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 		gameOverImage = IngameMenu.GetComponent<Image>();
 		gameOverImage.enabled = false;
 		IngameMenu.transform.GetChild(0).gameObject.SetActive(true);
+
+		gameOver = false;
 	}
 	
 
 	public void OnPointerDown(PointerEventData ped){
-		if(NewGameManager.gameOver){
+		if(NewGameManager.gameOver && !gameOver){
 			ForceGameOverStart();
+		} else if(gameOver){
+			return;
 		} else if(!doubleTapInitialized){
 			doubleTapInitialized = true;
 			firstTapTime = Time.time;
@@ -54,11 +60,11 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void ForceGameOverStart(){
+		gameOver = true;
 		foreach(PlayerScript ps in playerScripts)
 			ps.DisableControls();
 		
 		StartCoroutine(SlowDownTime(Time.time));
-		
 	}
 
 	public void ForceGameOverEnd(){

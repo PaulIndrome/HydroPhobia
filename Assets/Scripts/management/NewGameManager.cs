@@ -8,6 +8,7 @@ public class NewGameManager : MonoBehaviour{
 
 	public GamePauseHandler gamePauseHandler;
 	public BigParticleReleaseHandler bigParticleReleaseHandler;
+	public SmallParticleReleaseHandler smallParticleReleaseHandler;
 	
 	public static bool gameOver = false;
 
@@ -20,6 +21,7 @@ public class NewGameManager : MonoBehaviour{
 
 		gameOver = false;
 		bigParticleReleaseHandler = GetComponent<BigParticleReleaseHandler>();
+		smallParticleReleaseHandler = GetComponent<SmallParticleReleaseHandler>();
 		gamePauseHandler = GetComponent<GamePauseHandler>();
 	}
 

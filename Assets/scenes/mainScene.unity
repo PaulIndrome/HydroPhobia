@@ -212,7 +212,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 716487c704b0c5b4cbd9e504cce29236, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -786,7 +786,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 518766911}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9, z: 0}
+  m_LocalPosition: {x: 0, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -805,6 +805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamePauseHandler: {fileID: 0}
   bigParticleReleaseHandler: {fileID: 0}
+  smallParticleReleaseHandler: {fileID: 0}
 --- !u!114 &518766915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -847,10 +848,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa601be0c4b7d64c994a0d2645e4b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delayBetweenSpawns: 0
-  fallingDelta: 0
+  delayBetweenSpawns: 2
+  fallingDelta: 1
+  xMin: -4
+  xMax: 4
+  spawnPosX: 0
   dangerousBigParticlesActive: 0
-  bigParticleSpawn: {fileID: 1292738942}
+  bigParticlePrefab: {fileID: 1691799891489248, guid: f11862a7ae15c75418df160ddcaec794,
+    type: 2}
+  bigParticleList: []
 --- !u!1 &584988956
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +868,7 @@ GameObject:
   - component: {fileID: 584988958}
   m_Layer: 0
   m_Name: CageLeft
-  m_TagString: Untagged
+  m_TagString: PlayerCage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1348,52 +1354,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1144977909}
---- !u!1 &1292738941
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1292738943}
-  - component: {fileID: 1292738942}
-  m_Layer: 0
-  m_Name: BigParticleSpawn
-  m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1292738942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1292738941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 317b30a5c3a74354d9d44b8652bbd3f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delayBetweenSpawns: 2
-  xMin: -3
-  xMax: 3
-  bigParticlePrefab: {fileID: 1691799891489248, guid: f11862a7ae15c75418df160ddcaec794,
-    type: 2}
-  bigParticles: []
---- !u!4 &1292738943
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1292738941}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1296491362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,7 +1447,7 @@ RectTransform:
   - {fileID: 1350372779}
   - {fileID: 425490492}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1584,7 +1544,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 716487c704b0c5b4cbd9e504cce29236, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1626,23 +1586,23 @@ LineRenderer:
       serializedVersion: 2
       key0: {r: 0.42155063, g: 0.76313084, b: 0.8308824, a: 1}
       key1: {r: 0.18944637, g: 0.2637006, b: 0.53676474, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 1, g: 0.8534483, b: 0.375, a: 0.627451}
+      key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 65535
-      ctime2: 0
-      ctime3: 0
+      ctime2: 41249
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
       atime1: 65535
-      atime2: 0
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -2151,7 +2111,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 716487c704b0c5b4cbd9e504cce29236, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2271,7 +2231,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 716487c704b0c5b4cbd9e504cce29236, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2356,7 +2316,7 @@ GameObject:
   - component: {fileID: 1870921193}
   m_Layer: 0
   m_Name: CageRight
-  m_TagString: Untagged
+  m_TagString: PlayerCage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

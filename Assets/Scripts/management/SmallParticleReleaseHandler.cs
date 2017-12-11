@@ -43,14 +43,12 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 	public static void SmallParticleReleaseFinished(GameObject finished){
 		smallParticleReleaserList.Remove(finished);
 		smallParticlesActive = false;
-		NewGameManager.instance.bigParticleReleaseHandler.bigParticleSpawn.ToggleDangerousParticles(false);
+		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(false);
 	}
 
 	public static void ComputeSmallParticlesToReleaseNext(int smallParticlesReleased, int smallParticlesCaught){
 		if(smallParticlesReleased == 1 && smallParticlesCaught == 0){
-			Debug.Log("GameOver, big guy has starved");
-			Time.timeScale = 0;
-			NewGameManager.gameOver = true;
+			NewGameManager.instance.ForceGameOver();
 		} else if (smallParticlesReleased >= 2 && smallParticlesCaught == 0){
 			smallParticlesToReleaseNext /= 2;
 		} else if (smallParticlesCaught >= smallParticlesReleased){
@@ -58,6 +56,5 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 		} else {
 			smallParticlesToReleaseNext = smallParticlesCaught;
 		}
-		//Debug.Log("Small Particles To Release Next: " + smallParticlesToReleaseNext);
 	}
 }
