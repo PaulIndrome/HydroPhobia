@@ -5,7 +5,7 @@ using UnityEngine;
 public class SmallParticleRelease : MonoBehaviour {
 
 	[SerializeField]
-	private int smallParticlesReleased, smallParticlesCaught;
+	private int smallParticlesReleased, smallParticlesCaught, smallParticlesAlive;
 	[SerializeField]
 	private float smallParticleSprayDelay, initialForceMultiplier;
 
@@ -35,6 +35,7 @@ public class SmallParticleRelease : MonoBehaviour {
 
 	public void StartSmallParticleRelease(int amountParticlesToRelease){
 		smallParticlesReleased = amountParticlesToRelease;
+		smallParticlesAlive = smallParticlesReleased;
 		
 		StartCoroutine(SpraySmallParticles());
 	}
@@ -42,12 +43,20 @@ public class SmallParticleRelease : MonoBehaviour {
 	public void SmallParticleCaught(GameObject smallParticle){
 		smallParticlesList.Remove(smallParticle);
 		smallParticlesCaught++;
+		smallParticlesAlive--;
 		IsFinished();
 	}
 
 	public void SmallParticleDestroyed(GameObject smallParticle){
 		smallParticlesList.Remove(smallParticle);
+		smallParticlesAlive--;
 		IsFinished();
+	}
+
+	public void SmallParticleRespawn(GameObject smallParticle, float xPos){
+		smallParticlesList.Remove(smallParticle);
+		transform.Translate(-(xPos/xPos)/2, 0.1f, 0, Space.World);
+		SpraySmallParticle();
 	}
 
 	public bool IsFinished(){

@@ -38,6 +38,11 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	
 
 	public void OnPointerDown(PointerEventData ped){
+		Vector3 pointerInWorld = ped.position;
+		Debug.Log("ped " + pointerInWorld);
+		pointerInWorld.z = 10;
+		pointerInWorld = Camera.main.ScreenToWorldPoint(pointerInWorld);
+		Debug.Log("scr2wld " + pointerInWorld);
 		if(NewGameManager.gameOver && !gameOver){
 			ForceGameOverStart();
 		} else if(gameOver){

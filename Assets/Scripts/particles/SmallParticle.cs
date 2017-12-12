@@ -30,7 +30,7 @@ public class SmallParticle : MonoBehaviour {
 
 	public void setMother(SmallParticleRelease spr){
 		mother = spr;
-		StartCoroutine(MoveAndCheckForOutOfScreen());
+		StartCoroutine(CheckForOutOfScreen());
 	}
 
 	public void OnCollisionEnter(Collision col){
@@ -53,13 +53,18 @@ public class SmallParticle : MonoBehaviour {
 		}
 	}
 
-	IEnumerator MoveAndCheckForOutOfScreen(){
+	IEnumerator CheckForOutOfScreen(){
 		while(gameObject.activeSelf){
 			if(transform.position.y <= -6){
 				mother.SmallParticleDestroyed(gameObject);
 				Destroy(gameObject);
+				yield break;
+			} else if (transform.position.x < NewGameManager.worldXMin || transform.position.x > NewGameManager.worldXMax){
+				mother.SmallParticleRespawn(gameObject, transform.position.x);
+				Destroy(gameObject);
+				yield break;
 			}
-			yield return null;
+			yield return new WaitForSecondsRealtime(0.1f);
 		}
 		yield break;
 	}

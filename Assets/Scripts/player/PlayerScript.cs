@@ -93,13 +93,14 @@ public class PlayerScript : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 	}
 
 	public bool RecentlyHitByParticle(){
-		if(!particleHitThisFrame){
-			particleHitThisFrame = true;
-			StartCoroutine(ParticleCollisionTimer());
-			return false;
-		} else {
-			return true;
-		}
+		//if(!particleHitThisFrame){
+		//	particleHitThisFrame = true;
+		//	StartCoroutine(ParticleCollisionTimer());
+		//	return false;
+		//} else {
+		//	return true;
+		//}
+		return false;
 	}
 
 	public void EnableControls(){
