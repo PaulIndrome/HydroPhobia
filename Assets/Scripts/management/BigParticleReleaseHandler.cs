@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class BigParticleReleaseHandler : MonoBehaviour {
 
+	public float delayBetweenSpawns, xMin, xMax, spawnPosX; 
+	public float fallingDelta;
 
-	public float delayBetweenSpawns, fallingDelta, xMin, xMax, spawnPosX;
 	private float spawnPosY;
 
 	public bool dangerousBigParticlesActive = false;
 
 	public GameObject bigParticlePrefab;
+
 	public List<BigParticle> bigParticleList = new List<BigParticle>();
 
 	void Start(){
@@ -39,19 +41,29 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 	}
 
 	public void ToggleDangerousParticles(bool dangerActive){
+		dangerousBigParticlesActive = dangerActive;
+		fallingDelta *= (dangerActive) ? 2f : 0.5f;
+		UpdateBigParticles();
+	}
+
+	public void SetFallingDelta(float multiplier){
+		fallingDelta *= multiplier;
+	}
+
+	public void UpdateBigParticles(){
 		foreach(BigParticle bp in bigParticleList){
 			if(bp != null){
-				bp.ToggleDangerousParticle(dangerActive);
-				bp.SetFallingDelta(dangerActive?fallingDelta+1:fallingDelta);
+				bp.ToggleDangerousParticle(dangerousBigParticlesActive);
+				bp.SetFallingDelta(fallingDelta);
 			} else {
 				continue;
 			}
 		}
-		dangerousBigParticlesActive = dangerActive;
 	}
 
 	public void RemoveFromList(BigParticle bp){
-		bigParticleList.Remove(bp);
+		if(bigParticleList.Contains(bp))
+			bigParticleList.Remove(bp);
 	}
 
 	IEnumerator spawnBigParticles(){

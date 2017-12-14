@@ -12,6 +12,7 @@ public class NewGameManager : MonoBehaviour{
 	public BigParticleReleaseHandler bigParticleReleaseHandler;
 	public SmallParticleReleaseHandler smallParticleReleaseHandler;
 	public CageHandler cageHandler;
+	public PlayerManager playerManager;
 	
 	public static bool gameOver = false;
 
@@ -28,6 +29,7 @@ public class NewGameManager : MonoBehaviour{
 		bigParticleReleaseHandler = GetComponent<BigParticleReleaseHandler>();
 		smallParticleReleaseHandler = GetComponent<SmallParticleReleaseHandler>();
 		gamePauseHandler = GetComponent<GamePauseHandler>();
+		playerManager = GetComponent<PlayerManager>();
 		
 		if(cageHandler == null)
 			cageHandler = GameObject.FindGameObjectWithTag("PlayerCageHandler").GetComponent<CageHandler>();
@@ -36,14 +38,12 @@ public class NewGameManager : MonoBehaviour{
 
 		FindXMinXMax();
 
+		SetBigParticleXRange();
+
 	}
 
 	public void ForceGameOver(){
 		gamePauseHandler.ForceGameOverStart();
-	}
-
-	public void toggleDangerousBigParticles(){
-		bigParticleReleaseHandler.dangerousBigParticlesActive = !bigParticleReleaseHandler.dangerousBigParticlesActive;
 	}
 
 	public void FindXMinXMax(){
@@ -55,13 +55,5 @@ public class NewGameManager : MonoBehaviour{
 		bigParticleReleaseHandler.xMin = worldXMin + 1;
 		bigParticleReleaseHandler.xMax = worldXMax - 1;
 	}
-
-	public void OnDrawGizmos(){
-		Gizmos.DrawLine(new Vector3(worldXMin+1, 0,0), new Vector3(worldXMax-1,0,0));
-	}
-
-
-	
-
 
 }

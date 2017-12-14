@@ -235,7 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player01: {fileID: 0}
   player02: {fileID: 0}
-  fallingDelta: 2
+  fallingDelta: 1
   smallParticleReleaserPrefab: {fileID: 1219012867782072, guid: 01f7ba9c7e01292459f50d9d958cd8f4,
     type: 2}
   meshRenderer: {fileID: 0}

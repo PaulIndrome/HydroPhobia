@@ -59,12 +59,12 @@ public class SmallParticle : MonoBehaviour {
 				mother.SmallParticleDestroyed(gameObject);
 				Destroy(gameObject);
 				yield break;
-			} else if (transform.position.x < NewGameManager.worldXMin || transform.position.x > NewGameManager.worldXMax){
-				mother.SmallParticleRespawn(gameObject, transform.position.x);
+			} else if (transform.position.x > NewGameManager.worldXMax || transform.position.x < NewGameManager.worldXMin){
+				mother.SmallParticleDestroyed(gameObject);
 				Destroy(gameObject);
 				yield break;
 			}
-			yield return new WaitForSecondsRealtime(0.1f);
+			yield return new WaitForSecondsRealtime(0.3f);
 		}
 		yield break;
 	}
@@ -72,6 +72,7 @@ public class SmallParticle : MonoBehaviour {
 	public void OnDrawGizmos(){
 		Gizmos.DrawRay(transform.position, transform.forward);
 	}
+
 
 
 

@@ -71,9 +71,11 @@ public class BigParticle : MonoBehaviour {
 		smallParticleReleaser.GetComponent<SmallParticleRelease>().RotateSmallParticleReleaserTowards(player01.transform.position);
 		player01.BigParticleHitPlayerOne();
 		SmallParticleReleaseHandler.SmallParticleReleaseOccured(smallParticleReleaser);
-		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(true);
+
 		NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
+
 		dangerousParticle = false;
+
 		Destroy(gameObject);
 	}
 

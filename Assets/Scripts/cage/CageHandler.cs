@@ -13,17 +13,21 @@ public class CageHandler : MonoBehaviour {
 	[SerializeField]
 	private LineRenderer[] leftAndRightBounds;
 
+	private BoxCollider[] boxColliders;
+
 	void Start(){
 		mainCam = Camera.main;
 		leftAndRightBounds = GetComponentsInChildren<LineRenderer>();
+		boxColliders = GetComponentsInChildren<BoxCollider>();
 
 		screenWidth = Screen.width;
 		screenHeight = Screen.height;
 		screenCornersInWorldSpace = new Vector3[4];
 		
-		
 		FindScreenCornersInWorldSpace();
 		DrawScreenBounds();
+		RepositionCageSides();
+		ScaleCageBottom();
 	}
 
 	public void FindScreenCornersInWorldSpace(){
@@ -41,6 +45,20 @@ public class CageHandler : MonoBehaviour {
 		//right bounds
 		leftAndRightBounds[1].SetPosition(0, screenCornersInWorldSpace[1]);
 		leftAndRightBounds[1].SetPosition(1, screenCornersInWorldSpace[2]);
+	}
+
+	public void RepositionCageSides(){
+		//left cage
+		Vector3 leftCenterPos = new Vector3(screenCornersInWorldSpace[0].x - boxColliders[0].size.x / 4, boxColliders[0].center.y, 0);
+		boxColliders[0].center = leftCenterPos;
+		//right cage
+		Vector3 rightCenterPos = new Vector3(screenCornersInWorldSpace[1].x + boxColliders[1].size.x / 4, boxColliders[1].center.y, 0);
+		boxColliders[1].center = rightCenterPos;
+	}
+
+	public void ScaleCageBottom(){
+		Vector3 bottomCageScale = new Vector3(screenCornersInWorldSpace[1].x * 2.25f, boxColliders[2].size.y, boxColliders[2].size.z);
+		boxColliders[2].size = bottomCageScale;
 	}
 
 }

@@ -23,6 +23,7 @@ public class SmallParticleRelease : MonoBehaviour {
 		if(initialForceMultiplier == 0)
 			initialForceMultiplier = 1f;
 		SmallParticleReleaseHandler.smallParticlesActive = true;
+		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(true);
 	}
 
 	public void RotateSmallParticleReleaserTowards(Vector3 playerPosition){
@@ -34,6 +35,7 @@ public class SmallParticleRelease : MonoBehaviour {
 	}
 
 	public void StartSmallParticleRelease(int amountParticlesToRelease){
+
 		smallParticlesReleased = amountParticlesToRelease;
 		smallParticlesAlive = smallParticlesReleased;
 		
@@ -53,29 +55,16 @@ public class SmallParticleRelease : MonoBehaviour {
 		IsFinished();
 	}
 
-	public void SmallParticleRespawn(GameObject smallParticle, float xPos){
-		smallParticlesList.Remove(smallParticle);
-		transform.Translate(-(xPos/xPos)/2, 0.1f, 0, Space.World);
-		SpraySmallParticle();
-	}
-
 	public bool IsFinished(){
-		if(smallParticlesList.Count == 0){
+		if(smallParticlesList.Count <= 0 || smallParticlesAlive <= 0){
 			SmallParticleReleaseHandler.ComputeSmallParticlesToReleaseNext(smallParticlesReleased, smallParticlesCaught);
 			SmallParticleReleaseHandler.SmallParticleReleaseFinished(gameObject);
+			NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(false);
 			Destroy(gameObject);
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	IEnumerator SpraySmallParticles(){
-		for(int i = 0; i<smallParticlesReleased;i++){
-			SpraySmallParticle();
-			yield return new WaitForSeconds(smallParticleSprayDelay);
-		}
-		yield return null;
 	}
 
 	public void OnDrawGizmos(){
@@ -89,6 +78,14 @@ public class SmallParticleRelease : MonoBehaviour {
 		Vector3 sprayDirection = new Vector3(0, Random.Range(-1,1), Random.Range(-1,-2) * initialForceMultiplier).normalized;
 		smallParticle.GetComponent<Rigidbody>().AddForce(-transform.forward * initialForceMultiplier, ForceMode.Impulse);
 		smallParticlesList.Add(smallParticle);
+	}
+
+	IEnumerator SpraySmallParticles(){
+		for(int i = 0; i<smallParticlesReleased;i++){
+			SpraySmallParticle();
+			yield return new WaitForSeconds(smallParticleSprayDelay);
+		}
+		yield return null;
 	}
 
 }

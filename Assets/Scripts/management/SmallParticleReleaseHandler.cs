@@ -14,7 +14,7 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 
 	public static bool smallParticlesActive = false;
 
-	private static List<GameObject> smallParticleReleaserList = new List<GameObject>();
+	public static List<GameObject> smallParticleReleaserList = new List<GameObject>();
 
 	public void Awake(){
 		if(instance == null){
@@ -22,7 +22,6 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 		} else if (instance != null){
 			Destroy(gameObject);
 		}
-
 		Reset();
 	}
 
@@ -43,7 +42,6 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 	public static void SmallParticleReleaseFinished(GameObject finished){
 		smallParticleReleaserList.Remove(finished);
 		smallParticlesActive = false;
-		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(false);
 	}
 
 	public static void ComputeSmallParticlesToReleaseNext(int smallParticlesReleased, int smallParticlesCaught){
@@ -57,4 +55,5 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 			smallParticlesToReleaseNext = smallParticlesCaught;
 		}
 	}
+
 }
