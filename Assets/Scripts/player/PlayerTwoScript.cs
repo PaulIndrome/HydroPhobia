@@ -14,8 +14,6 @@ public class PlayerTwoScript : Player {
 		
 		playerControlActive = GrabPlayerControlActive();
 
-		Debug.Log(playerControlActive + " " + GrabLerpToPointerSpeed());
-
 		StartCoroutine(LerpToRestingPos());
 	}
 

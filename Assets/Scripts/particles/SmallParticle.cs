@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class SmallParticle : MonoBehaviour {
 
-	[SerializeField]
-	private PlayerScript player01, player02;
+	[SerializeField] private PlayerOneScript player01;
+	[SerializeField] private PlayerTwoScript player02;
 
-	[SerializeField]
-	private SmallParticleRelease mother;
+	[SerializeField] private SmallParticleRelease mother;
 
 	private Rigidbody rigBod;
 
@@ -18,14 +17,9 @@ public class SmallParticle : MonoBehaviour {
 		rigBod = GetComponent<Rigidbody>();
 		rigBod.mass = Random.Range(0.4f, 0.9f);
 
-		player01 = GameObject.FindGameObjectWithTag("Player01").GetComponent<PlayerScript>();
-		player02 = GameObject.FindGameObjectWithTag("Player02").GetComponent<PlayerScript>();
+		player01 = NewGameManager.instance.playerManager.playerOne;
+		player02 = NewGameManager.instance.playerManager.playerTwo;
 
-	}
-
-	public void Start(){
-		if(!player01 || !player02)
-			Debug.LogError("Players not set up for BigParticlePrefab");
 	}
 
 	public void setMother(SmallParticleRelease spr){
@@ -37,15 +31,15 @@ public class SmallParticle : MonoBehaviour {
 		hasCollided = true;
 		GameObject collider = col.gameObject;
 		//Debug.Log("Collision on " + collider.name);
-		if(collider.CompareTag("Player01")){
+		if(collider.GetComponent<PlayerOneScript>() != null){
 			mother.SmallParticleDestroyed(gameObject);
-			player01.SmallParticleHitPlayerOne();
+			player01.SmallParticleHit();
 			Destroy(gameObject);
-		} else if (collider.CompareTag("Player02")){
+		} else if (collider.GetComponent<PlayerTwoScript>() != null){
 			mother.SmallParticleCaught(gameObject);
-			player02.SmallParticleHitPlayerTwo();
+			player02.SmallParticleHit();
 			Destroy(gameObject);
-		} else if(collider.CompareTag("PlayerCage")){
+		} else if(collider.GetComponent<CageBottomCollisionHandler>() == null && collider.transform.parent.GetComponent<CageHandler>() != null){
 			rigBod.velocity = Vector3.Reflect(rigBod.velocity, col.contacts[0].normal)*1.2f;
 		} else {
 			mother.SmallParticleDestroyed(gameObject);

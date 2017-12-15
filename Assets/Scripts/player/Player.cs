@@ -35,7 +35,6 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 			pointerInWorld = ped.position;
 			pointerInWorld.z = 10;
 			pointerInWorld = mainCam.ScreenToWorldPoint(pointerInWorld);
-			child3dObject.Rotate(new Vector3(ped.delta.x * (1 + Random.value), ped.delta.x * (1 + Random.value), Random.value*10));
 		}
 	}
 
@@ -49,27 +48,34 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 	}
 
 	public virtual void BigParticleHit(){
-
+		//specify in specialized player script
 	}
 
 	public virtual void SmallParticleHit(){
-		
+		//specify in specialized player script
 	}
 
 	public virtual float GrabLerpToPointerSpeed(){
+		//specify GameManager slot per player in specialized player script
 		return 0.0f;
 	}
 
 	public virtual bool GrabPlayerControlActive(){
+		//specify GameManager slot per player in specialized player script
 		return false;
 	}
 
 	public virtual Vector3 GrabPlayerRestingPos(){
+		//specify GameManager slot per player in specialized player script
 		return Vector3.up;
 	}
 
 
+	//TODO 
+	//danger visuals for players
+
 	public virtual IEnumerator LerpToPointer(){
+		float rotateSpeed;
 		while(isDragging){
 			rigBod.velocity = Vector3.zero;
 			/*
@@ -78,6 +84,8 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, rigBod.velocity.magnitude);	
 			 */
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, Time.deltaTime * GrabLerpToPointerSpeed());
+			rotateSpeed = GrabLerpToPointerSpeed() * (1 + Time.deltaTime) * Vector3.Distance(transform.position,pointerInWorld);
+			child3dObject.Rotate(new Vector3(rotateSpeed, rotateSpeed, rotateSpeed));
 			yield return null;
 		}
 		yield break;
