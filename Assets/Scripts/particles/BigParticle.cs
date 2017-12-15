@@ -5,7 +5,8 @@ using UnityEngine;
 public class BigParticle : MonoBehaviour {
 
 	[SerializeField]
-	private PlayerScript player01, player02;
+	private PlayerOneScript player01;
+	private PlayerTwoScript player02;
 
 	[SerializeField]
 	private float fallingDelta = 1.0f;
@@ -22,13 +23,11 @@ public class BigParticle : MonoBehaviour {
 	public bool dangerousParticle = false;
 
 	public void Awake(){
-		player01 = GameObject.FindGameObjectWithTag("Player01").GetComponent<PlayerScript>();
-		player02 = GameObject.FindGameObjectWithTag("Player02").GetComponent<PlayerScript>();
+		player01 = NewGameManager.instance.playerManager.playerOne;
+		player02 = NewGameManager.instance.playerManager.playerTwo;
 	}
 
 	public void Start(){
-		if(!player01 || !player02)
-			Debug.LogError("Players not set up for BigParticlePrefab");
 		if(meshRenderer == null)
 			meshRenderer = GetComponentInChildren<MeshRenderer>();
 			
@@ -41,11 +40,11 @@ public class BigParticle : MonoBehaviour {
 		hasCollided = true;
 		GameObject collider = col.gameObject;
 		//Debug.Log("Collision on " + collider.name);
-		if(collider.CompareTag("Player01") && !SmallParticleReleaseHandler.smallParticlesActive){
+		if(collider.GetComponent<PlayerOneScript>() != null && !SmallParticleReleaseHandler.smallParticlesActive){
 			BigParticleFoodAndDanger();
-		} else if (collider.CompareTag("Player01") && SmallParticleReleaseHandler.smallParticlesActive){
+		} else if (collider.GetComponent<PlayerOneScript>() != null && SmallParticleReleaseHandler.smallParticlesActive){
 			BigParticleAverted();
-		} else if (collider.CompareTag("Player02")){
+		} else if (collider.GetComponent<PlayerTwoScript>() != null){
 			BigParticleKillsSube();
 		} 
 	}
@@ -69,7 +68,7 @@ public class BigParticle : MonoBehaviour {
 	public void BigParticleFoodAndDanger(){
 		GameObject smallParticleReleaser = Instantiate(smallParticleReleaserPrefab, transform.position, Quaternion.identity);
 		smallParticleReleaser.GetComponent<SmallParticleRelease>().RotateSmallParticleReleaserTowards(player01.transform.position);
-		player01.BigParticleHitPlayerOne();
+		player01.BigParticleHit();
 		SmallParticleReleaseHandler.SmallParticleReleaseOccured(smallParticleReleaser);
 
 		NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
@@ -80,22 +79,23 @@ public class BigParticle : MonoBehaviour {
 	}
 
 	public void BigParticleAverted(){
-		player01.BigParticleHitPlayerOne();
+		player01.BigParticleHit();
 		NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
 		dangerousParticle = false;
 		Destroy(gameObject);
 	}
 
 	public void BigParticleKillsSube(){
-		player02.BigParticleHitPlayerTwo();
+		player02.BigParticleHit();
 		ps[0].Play();
 		meshRenderer.enabled = false;
 		NewGameManager.instance.ForceGameOver();
 	}
 
 	IEnumerator MoveAndCheckForOutOfScreen(){
+		float startTime = Time.time;
 		while(gameObject.activeSelf){
-			transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + Random.Range(-1f,1f), transform.position.y - fallingDelta, 0), Time.deltaTime);
+			transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + Mathf.Sin(Time.time - startTime)*0.5f, transform.position.y - fallingDelta, 0), Time.deltaTime);
 			if(transform.position.y <= -6){
 				NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
 				Destroy(gameObject);

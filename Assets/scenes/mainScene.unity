@@ -253,7 +253,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.42155063, g: 0.76313084, b: 0.8308824, a: 1}
-      key1: {r: 0.18944637, g: 0.2637006, b: 0.53676474, a: 1}
+      key1: {r: 0, g: 0.28169373, b: 0.74264705, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -892,10 +892,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7187457f9c16644c9fd84c28ce4d837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerOne: {fileID: 469112770}
+  playerTwo: {fileID: 933521032}
   lerpToPointerSpeedPlayer01: 2
   lerpToPointerSpeedPlayer02: 5
   playerControl01: 1
-  playerControl02: 0
+  playerControl02: 1
   playerRestingPos01: {x: 0, y: 0, z: 0}
   playerRestingPos02: {x: 0, y: -5, z: 0}
 --- !u!1 &584988956
@@ -1180,7 +1182,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fd75ba0085b15e34cab7621251de0fbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1391,7 +1393,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6d2e03545ff7beb4e8908d8eb6281317, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1431,7 +1433,7 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1094697984}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300002, guid: 4ac18171766b9954394ef3b91f207e2b, type: 3}
 --- !u!1 &1144977909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,24 +1792,24 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.42155063, g: 0.76313084, b: 0.8308824, a: 1}
-      key1: {r: 0.18944637, g: 0.2637006, b: 0.53676474, a: 1}
-      key2: {r: 1, g: 0.8534483, b: 0.375, a: 0.627451}
-      key3: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0, g: 0.28169373, b: 0.74264705, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 65535
-      ctime2: 41249
-      ctime3: 65535
+      ctime2: 0
+      ctime3: 0
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
       atime1: 65535
-      atime2: 65535
+      atime2: 0
       atime3: 0
       atime4: 0
       atime5: 0
@@ -2351,13 +2353,19 @@ LineRenderer:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.8308824, g: 0.42155063, b: 0.42155063, a: 1}
-      key1: {r: 0.4601153, g: 0.1894464, b: 0.53676474, a: 1}
+      key0: {r: 0.6050442, g: 0.8308824, b: 0.42155063, a: 1}
+      key1: {r: 0.031001717, g: 0.5588235, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -2471,13 +2479,19 @@ LineRenderer:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.8308824, g: 0.42155063, b: 0.42155063, a: 1}
-      key1: {r: 0.4601153, g: 0.1894464, b: 0.53676474, a: 1}
+      key0: {r: 0.6050442, g: 0.8308824, b: 0.42155063, a: 1}
+      key1: {r: 0.031001717, g: 0.5588235, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

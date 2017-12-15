@@ -39,10 +39,8 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 
 	public void OnPointerDown(PointerEventData ped){
 		Vector3 pointerInWorld = ped.position;
-		Debug.Log("ped " + pointerInWorld);
 		pointerInWorld.z = 10;
 		pointerInWorld = Camera.main.ScreenToWorldPoint(pointerInWorld);
-		Debug.Log("scr2wld " + pointerInWorld);
 		if(NewGameManager.gameOver && !gameOver){
 			ForceGameOverStart();
 		} else if(gameOver){
@@ -52,7 +50,6 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 			firstTapTime = Time.time;
 			StartCoroutine(ResetDoubleTapInit());
 		} else if (Time.time - firstTapTime < timeBetweenTaps){
-			//Debug.Log("Doubletap");
 			PauseUnpauseGame();
 		} 
 	}
@@ -66,9 +63,7 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 
 	public void ForceGameOverStart(){
 		gameOver = true;
-		foreach(PlayerScript ps in playerScripts)
-			ps.DisableControls();
-		
+		NewGameManager.instance.playerManager.DisablePlayerControl();
 		StartCoroutine(SlowDownTime(Time.time));
 	}
 

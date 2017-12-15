@@ -14,13 +14,11 @@ public class PlayerOneScript : Player {
 		
 		playerControlActive = GrabPlayerControlActive();
 
-		Debug.Log(playerControlActive + " " + GrabLerpToPointerSpeed());
-
 		StartCoroutine(LerpToRestingPos());
 	}
 
 	public override void BigParticleHit(){
-
+		
 	}
 
 	public override void SmallParticleHit(){

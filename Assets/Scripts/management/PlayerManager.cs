@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
 
+	public PlayerOneScript playerOne;
+	public PlayerTwoScript playerTwo;
+
 	public float lerpToPointerSpeedPlayer01;
 	public float lerpToPointerSpeedPlayer02;
 
@@ -22,5 +25,19 @@ public class PlayerManager : MonoBehaviour {
 		//
 		//playerRestingPos01 = Vector3.zero;
 		//playerRestingPos02 = new Vector3(0,-5,0);
+	}
+
+	public void PlayerOneShieldActive(){
+
+	}
+
+
+	public void EnablePlayerControl(){
+		playerControl01 = true;
+		playerControl02 = true;
+	}
+	public void DisablePlayerControl(){
+		playerControl01 = false;
+		playerControl02 = false;
 	}
 }
