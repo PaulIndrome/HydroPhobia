@@ -1,22 +1,26 @@
 every small particle that is not caught
-	reduces Sube's speed
+	reduces Bube's speed
 
 every big particle that is not caught 	
+	reduces Sube's speed
 	reduces Bube's speed
 
 every small particle that is caught 
 	by Bube 
-		reduces Sube's speed
+		reduces Sube's speed 
 	by Sube
 		increases Bube's speed
 
 every big particle that is caught
 	by Bube
 		releases small particles
+		increases Sube's speed
 	by Sube
 		ends the game
 
+
 Sube 	v-	2
-	v+	0
-Bube	v-	1
+	v+	1
+
+Bube	v-	2
 	v+	1

@@ -18,11 +18,13 @@ public class PlayerOneScript : Player {
 	}
 
 	public override void BigParticleHit(){
-
+		//every big particle that is caught by Bube increases Sube's speed
+		NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 1.1f);
 	}
 
 	public override void SmallParticleHit(){
-		
+		//every small particle that is caught by Bube reduces Sube's speed
+		NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.9f);
 	}
 
 	public override float GrabLerpToPointerSpeed(){

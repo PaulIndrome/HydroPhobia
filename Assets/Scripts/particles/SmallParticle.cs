@@ -42,6 +42,8 @@ public class SmallParticle : MonoBehaviour {
 		} else if(collider.GetComponent<CageBottomCollisionHandler>() == null && collider.transform.parent.GetComponent<CageHandler>() != null){
 			rigBod.velocity = Vector3.Reflect(rigBod.velocity, col.contacts[0].normal)*1.2f;
 		} else {
+			//every small particle that is not caught reduces Bube's speed
+			NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(1, 0.9f);
 			mother.SmallParticleDestroyed(gameObject);
 			Destroy(gameObject);
 		}

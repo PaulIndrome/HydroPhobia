@@ -84,7 +84,7 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 			 */
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, Time.deltaTime * GrabLerpToPointerSpeed());
 			rotateSpeed = GrabLerpToPointerSpeed() * (1 + Time.deltaTime) * Vector3.Distance(transform.position,pointerInWorld);
-			child3dObject.Rotate(new Vector3(rotateSpeed, rotateSpeed, rotateSpeed));
+			child3dObject.Rotate(Random.rotation.eulerAngles * rotateSpeed * 0.01f);
 			yield return null;
 		}
 		yield break;

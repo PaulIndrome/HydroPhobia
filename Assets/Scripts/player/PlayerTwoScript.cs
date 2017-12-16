@@ -22,7 +22,8 @@ public class PlayerTwoScript : Player {
 	}
 
 	public override void SmallParticleHit(){
-		
+		// every small particle that is caught by Sube increases Bube's speed
+		NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(1, 1.1f);
 	}
 
 	public override float GrabLerpToPointerSpeed(){
