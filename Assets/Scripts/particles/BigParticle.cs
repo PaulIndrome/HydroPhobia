@@ -73,16 +73,14 @@ public class BigParticle : MonoBehaviour {
 
 		NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
 
-		dangerousParticle = false;
-
-		Destroy(gameObject);
+		DisableDangerAndDestroy();
 	}
 
 	public void BigParticleAverted(){
 		player01.BigParticleHit();
 		NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
-		dangerousParticle = false;
-		Destroy(gameObject);
+
+		DisableDangerAndDestroy();
 	}
 
 	public void BigParticleKillsSube(){
@@ -92,6 +90,10 @@ public class BigParticle : MonoBehaviour {
 		NewGameManager.instance.ForceGameOver();
 	}
 
+	public void DisableDangerAndDestroy(){
+		dangerousParticle = false;
+		Destroy(gameObject);
+	}
 	IEnumerator MoveAndCheckForOutOfScreen(){
 		float startTime = Time.time;
 		while(gameObject.activeSelf){

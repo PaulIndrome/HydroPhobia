@@ -18,7 +18,7 @@ public class PlayerOneScript : Player {
 	}
 
 	public override void BigParticleHit(){
-		
+
 	}
 
 	public override void SmallParticleHit(){
@@ -37,6 +37,7 @@ public class PlayerOneScript : Player {
 		return NewGameManager.instance.playerManager.playerRestingPos01;
 	}
 
+	
 
 
 

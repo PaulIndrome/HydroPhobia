@@ -70,7 +70,6 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 		return Vector3.up;
 	}
 
-
 	//TODO 
 	//danger visuals for players
 

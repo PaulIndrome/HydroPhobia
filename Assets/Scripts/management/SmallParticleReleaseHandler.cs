@@ -36,11 +36,13 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 	}
 
 	public static void SmallParticleReleaseOccured(GameObject occurrence){
+		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(true);
 		smallParticleReleaserList.Add(occurrence);
 	}
 
 	public static void SmallParticleReleaseFinished(GameObject finished){
 		smallParticleReleaserList.Remove(finished);
+		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(false);
 		smallParticlesActive = false;
 	}
 

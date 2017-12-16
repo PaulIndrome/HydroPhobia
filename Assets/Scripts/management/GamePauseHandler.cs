@@ -16,19 +16,16 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	private float firstTapTime = 0f;
 	[SerializeField]
 	private float timeBetweenTaps = 0.2f;
+
+	private int firstTapID;
 	
 	[SerializeField]
 	private GameObject IngameMenu;
 
 	private Image gameOverImage;
 
-	[SerializeField]
-	private PlayerScript[] playerScripts;
 
 	public void Awake(){
-		if(playerScripts == null)
-			Debug.LogError("No PlayerScripts set in GamePauseHandler");
-
 		gameOverImage = IngameMenu.GetComponent<Image>();
 		gameOverImage.enabled = false;
 		IngameMenu.transform.GetChild(0).gameObject.SetActive(true);
@@ -38,6 +35,7 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	
 
 	public void OnPointerDown(PointerEventData ped){
+		firstTapID = ped.pointerId;
 		Vector3 pointerInWorld = ped.position;
 		pointerInWorld.z = 10;
 		pointerInWorld = Camera.main.ScreenToWorldPoint(pointerInWorld);
@@ -49,7 +47,7 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 			doubleTapInitialized = true;
 			firstTapTime = Time.time;
 			StartCoroutine(ResetDoubleTapInit());
-		} else if (Time.time - firstTapTime < timeBetweenTaps){
+		} else if (Time.time - firstTapTime < timeBetweenTaps && ped.pointerId == firstTapID){
 			PauseUnpauseGame();
 		} 
 	}
@@ -78,6 +76,7 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	IEnumerator ResetDoubleTapInit(){
 		yield return new WaitForSecondsRealtime(timeBetweenTaps+0.05f);
 		doubleTapInitialized = false;
+		firstTapID = -1;
 	}
 
 	IEnumerator SlowDownTime(float startTime){

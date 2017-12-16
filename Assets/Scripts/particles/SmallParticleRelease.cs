@@ -23,7 +23,6 @@ public class SmallParticleRelease : MonoBehaviour {
 		if(initialForceMultiplier == 0)
 			initialForceMultiplier = 1f;
 		SmallParticleReleaseHandler.smallParticlesActive = true;
-		NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(true);
 	}
 
 	public void RotateSmallParticleReleaserTowards(Vector3 playerPosition){
@@ -59,7 +58,6 @@ public class SmallParticleRelease : MonoBehaviour {
 		if(smallParticlesList.Count <= 0 || smallParticlesAlive <= 0){
 			SmallParticleReleaseHandler.ComputeSmallParticlesToReleaseNext(smallParticlesReleased, smallParticlesCaught);
 			SmallParticleReleaseHandler.SmallParticleReleaseFinished(gameObject);
-			NewGameManager.instance.bigParticleReleaseHandler.ToggleDangerousParticles(false);
 			Destroy(gameObject);
 			return true;
 		} else {
