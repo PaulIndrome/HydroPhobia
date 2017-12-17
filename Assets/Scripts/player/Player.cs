@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 	public Transform child3dObject;
 
 	[HideInInspector] public float hitDelay;
+	[HideInInspector] public Vector2 pedDelta;
 	[HideInInspector] public bool isDragging;
 	[HideInInspector] public bool playerControlActive;
 	[HideInInspector] public Rigidbody rigBod;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 	public void OnDrag(PointerEventData ped){
 		if(GrabPlayerControlActive())
 		{
+			pedDelta = ped.delta;
 			pointerInWorld = ped.position;
 			pointerInWorld.z = 10;
 			pointerInWorld = mainCam.ScreenToWorldPoint(pointerInWorld);
@@ -74,7 +76,8 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 	//danger visuals for players
 
 	public virtual IEnumerator LerpToPointer(){
-		float rotateSpeed;
+		float distanceFromPointer;
+		Vector3 distanceVector;
 		while(isDragging){
 			rigBod.velocity = Vector3.zero;
 			/*
@@ -83,8 +86,10 @@ public class Player : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointer
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, rigBod.velocity.magnitude);	
 			 */
 			transform.position = Vector3.Lerp(transform.position, pointerInWorld, Time.deltaTime * GrabLerpToPointerSpeed());
-			rotateSpeed = GrabLerpToPointerSpeed() * (1 + Time.deltaTime) * Vector3.Distance(transform.position,pointerInWorld);
-			child3dObject.Rotate(Random.rotation.eulerAngles * rotateSpeed * 0.01f);
+			distanceVector = pointerInWorld - transform.position;
+			distanceFromPointer = distanceVector.magnitude;
+
+			child3dObject.Rotate(distanceVector.x * (GrabLerpToPointerSpeed() + Time.deltaTime) * distanceFromPointer, distanceVector.x * (GrabLerpToPointerSpeed() + Time.deltaTime) * distanceFromPointer, distanceFromPointer);
 			yield return null;
 		}
 		yield break;

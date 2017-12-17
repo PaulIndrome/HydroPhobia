@@ -100,7 +100,7 @@ public class BigParticle : MonoBehaviour {
 			transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + Mathf.Sin(Time.time - startTime)*0.5f, transform.position.y - fallingDelta, 0), Time.deltaTime);
 			if(transform.position.y <= -6){
 				//every big particle that is not caught reduces Bube's and Sube's speed
-				NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.9f);
+				NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.8f);
 				NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(1, 0.9f);
 				
 				NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
