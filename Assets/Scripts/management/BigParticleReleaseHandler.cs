@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BigParticleReleaseHandler : MonoBehaviour {
 
 	public float delayBetweenSpawns, xMin, xMax, spawnPosX; 
 	public float fallingDelta;
+	public float bigParticleScore;
 
 	private float spawnPosY;
 
 	public bool dangerousBigParticlesActive = false;
 
 	public GameObject bigParticlePrefab;
+
+	public Text bigParticleScoreText;
 
 	public List<BigParticle> bigParticleList = new List<BigParticle>();
 
@@ -59,6 +63,11 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 				continue;
 			}
 		}
+	}
+
+	public void UpdateBigParticleScore(int minusPlus){
+		bigParticleScore += minusPlus;
+		bigParticleScoreText.text = "" + bigParticleScore;
 	}
 
 	public void RemoveFromList(BigParticle bp){

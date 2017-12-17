@@ -18,6 +18,8 @@ public class SmallParticleRelease : MonoBehaviour {
 
 	private Vector3 smallParticleSpawnPoint;
 
+	public ParticleSystem particleSys;
+
 
 	public void Start(){
 		if(initialForceMultiplier == 0)
@@ -34,7 +36,7 @@ public class SmallParticleRelease : MonoBehaviour {
 	}
 
 	public void StartSmallParticleRelease(int amountParticlesToRelease){
-
+		particleSys.Play();
 		smallParticlesReleased = amountParticlesToRelease;
 		smallParticlesAlive = smallParticlesReleased;
 		
@@ -83,6 +85,7 @@ public class SmallParticleRelease : MonoBehaviour {
 			SpraySmallParticle();
 			yield return new WaitForSeconds(smallParticleSprayDelay);
 		}
+		particleSys.Stop();
 		yield return null;
 	}
 

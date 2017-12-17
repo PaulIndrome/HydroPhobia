@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -15,6 +16,9 @@ public class PlayerManager : MonoBehaviour {
 
 	public Vector3 playerRestingPos01;
 	public Vector3 playerRestingPos02;
+
+	public Text player01LerpSpeedText;
+	public Text player02LerpSpeedText;	
 
 	public void EnablePlayerControl(){
 		playerControl01 = true;
@@ -32,6 +36,9 @@ public class PlayerManager : MonoBehaviour {
 			lerpToPointerSpeedPlayer02 *= multiplier;
 		} else 
 			return;
+		
+		UpdatePlayerText();
+	
 	}
 
 	public void ChangePlayerLerpSpeed(int playerNum, int value){
@@ -41,5 +48,26 @@ public class PlayerManager : MonoBehaviour {
 			lerpToPointerSpeedPlayer02 += value;
 		} else 
 			return;
+
+		UpdatePlayerText();
 	}
+
+	public void UpdatePlayerText(){
+		//Debug.Log("Player 01: " + lerpToPointerSpeedPlayer01.ToString());
+		//Debug.Log("Player 02: " + lerpToPointerSpeedPlayer02.ToString());
+		if(lerpToPointerSpeedPlayer01.ToString().Length > 4){
+			char[] p01 = lerpToPointerSpeedPlayer01.ToString().ToCharArray();
+			player01LerpSpeedText.text = "" + p01[0] + p01[1] + p01[2];
+			//Debug.Log("Player 01 actual: " + player01LerpSpeedText.text);
+		} else {
+			player01LerpSpeedText.text = "" + lerpToPointerSpeedPlayer01;
+		}
+		if(lerpToPointerSpeedPlayer02.ToString().Length > 4){
+			char[] p02 = lerpToPointerSpeedPlayer02.ToString().ToCharArray();
+			player02LerpSpeedText.text = "" + p02[0] + p02[1] + p02[2];
+			//Debug.Log("Player 02 actual: " + player02LerpSpeedText.text);
+		} else {
+			player02LerpSpeedText.text = "" + lerpToPointerSpeedPlayer02;
+		}
+		}
 }

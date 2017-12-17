@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SmallParticleReleaseHandler : MonoBehaviour {
-
-	public static SmallParticleReleaseHandler instance {get; private set;}
 
 	[SerializeField]
 	private static float bigParticleFallSpeed, smallParticleFallSpeed, bigParticleDelay;
@@ -16,12 +15,11 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 
 	public static List<GameObject> smallParticleReleaserList = new List<GameObject>();
 
+	public float smallParticleScore;
+
+	public Text smallParticleScoreText;
+
 	public void Awake(){
-		if(instance == null){
-			instance = this;
-		} else if (instance != null){
-			Destroy(gameObject);
-		}
 		Reset();
 	}
 
@@ -56,6 +54,11 @@ public class SmallParticleReleaseHandler : MonoBehaviour {
 		} else {
 			smallParticlesToReleaseNext = smallParticlesCaught;
 		}
+	}
+
+	public void UpdateSmallParticleScore(int plusMinus){
+		smallParticleScore += plusMinus;
+		smallParticleScoreText.text = "" + smallParticleScore;
 	}
 
 }
