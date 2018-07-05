@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
 
+	public delegate void HealthImpactDelegate(PlayerEnum pEnum, int impact);
+	public static event HealthImpactDelegate HealthImpactEvent;
+
 	public PlayerOneScript playerOne;
 	public PlayerTwoScript playerTwo;
 
@@ -17,8 +20,8 @@ public class PlayerManager : MonoBehaviour {
 	public Vector3 playerRestingPos01;
 	public Vector3 playerRestingPos02;
 
-	public Text player01LerpSpeedText;
-	public Text player02LerpSpeedText;	
+	public TextMesh player01LerpSpeedText;
+	public TextMesh player02LerpSpeedText;	
 
 	public void EnablePlayerControl(){
 		playerControl01 = true;
@@ -27,6 +30,10 @@ public class PlayerManager : MonoBehaviour {
 	public void DisablePlayerControl(){
 		playerControl01 = false;
 		playerControl02 = false;
+	}
+
+	public void TogglePlayerControl(bool enabled){
+		playerControl01 = playerControl02 = enabled;
 	}
 
 	public void ChangePlayerLerpSpeed(int playerNum, float multiplier){
@@ -69,5 +76,9 @@ public class PlayerManager : MonoBehaviour {
 		} else {
 			player02LerpSpeedText.text = "" + lerpToPointerSpeedPlayer02;
 		}
-		}
+	}
+
+	public static void HealthImpact(PlayerEnum pEnum, int impact){
+		HealthImpactEvent(pEnum, impact);
+	}
 }

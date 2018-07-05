@@ -39,12 +39,18 @@ public class SmallParticle : MonoBehaviour {
 			mother.SmallParticleCaught(gameObject);
 			player02.SmallParticleHit();
 			Destroy(gameObject);
-		} else if(collider.GetComponent<CageBottomCollisionHandler>() == null && collider.transform.parent.GetComponent<CageHandler>() != null){
+		} else if(collider.CompareTag("PlayerCage")){
 			rigBod.velocity = Vector3.Reflect(rigBod.velocity, col.contacts[0].normal)*1.2f;
-		} else {
+		} else if(collider.layer == LayerMask.NameToLayer("CageBottom")){
+			/*
 			//every small particle that is not caught reduces Bube's and Sube's speed
 			NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(1, 0.8f);
 			NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.9f);
+			*/
+			//Debug.Log("Small Particle not caught");
+			//every small particle not caught hurts Bube more than Sube
+			PlayerManager.HealthImpact(PlayerEnum.Bube, -10);
+			PlayerManager.HealthImpact(PlayerEnum.Sube, -3);
 			mother.SmallParticleDestroyed(gameObject);
 			Destroy(gameObject);
 		}

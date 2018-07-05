@@ -10,25 +10,30 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 
 	[SerializeField]
 	private bool menuOpened = false;
-	[SerializeField]
 	private bool doubleTapInitialized = false;
 	[SerializeField]
-	private float firstTapTime = 0f;
+	private int tapsForAction = 3;
+	[SerializeField] 
+	private int counter = 0;
+	private float firstTapTime = 0f, lastTapTime = 0f;
 	[SerializeField]
 	private float timeBetweenTaps = 0.2f;
 
 	private int firstTapID;
 	
 	[SerializeField]
-	private GameObject IngameMenu;
+	private GameObject ingameMenu;
+	[SerializeField]
+	private Button continueButton, tutorialButton;
 
 	private Image gameOverImage;
 
 
 	public void Awake(){
-		gameOverImage = IngameMenu.GetComponent<Image>();
+		gameOverImage = ingameMenu.GetComponent<Image>();
 		gameOverImage.enabled = false;
-		IngameMenu.transform.GetChild(0).gameObject.SetActive(true);
+		continueButton.gameObject.SetActive(true);
+		tutorialButton.gameObject.SetActive(true);
 
 		gameOver = false;
 	}
@@ -44,44 +49,74 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 		} else if(gameOver){
 			return;
 		} else if(!doubleTapInitialized){
+			counter++;
 			doubleTapInitialized = true;
-			firstTapTime = Time.time;
+			lastTapTime = firstTapTime = Time.unscaledTime;
 			StartCoroutine(ResetDoubleTapInit());
-		} else if (Time.time - firstTapTime < timeBetweenTaps && ped.pointerId == firstTapID){
-			PauseUnpauseGame();
+		} else if (Time.unscaledTime - lastTapTime < timeBetweenTaps && ped.pointerId == firstTapID){
+			counter++;
+			lastTapTime = Time.unscaledTime;
+			if (counter >= tapsForAction) {
+				PauseUnpauseGame();
+			}
 		} 
 	}
 
 	public void PauseUnpauseGame(){
+		counter = 0;
 		doubleTapInitialized = false;
 		menuOpened = !menuOpened;
 		Time.timeScale = (menuOpened) ? 0 : 1;
-		IngameMenu.SetActive(menuOpened);
+		ingameMenu.SetActive(menuOpened);
+	}
+
+	public void PauseUnpauseGame(bool pause){
+		counter = 0;
+		doubleTapInitialized = false;
+		menuOpened = pause;
+		Time.timeScale = (pause) ? 0 : 1;
+		ingameMenu.SetActive(pause);
+		NewGameManager.instance.playerManager.TogglePlayerControl(!pause);
+	}
+
+	public void CloseIngameMenuForTutorial(){
+		counter = 0;
+		doubleTapInitialized = false;
+		menuOpened = false;
+		Time.timeScale = 0f;
+
+		NewGameManager.instance.playerManager.DisablePlayerControl();
+
+		ingameMenu.SetActive(false);
 	}
 
 	public void ForceGameOverStart(){
 		gameOver = true;
 		NewGameManager.instance.playerManager.DisablePlayerControl();
-		StartCoroutine(SlowDownTime(Time.time));
+		StartCoroutine(SlowDownTime(3f));
 	}
 
 	public void ForceGameOverEnd(){
-		menuOpened = !menuOpened;
-		Time.timeScale = (menuOpened) ? 0 : 1;
-		IngameMenu.SetActive(true);
-		IngameMenu.transform.GetChild(0).gameObject.SetActive(false);
+		NewGameManager.instance.playerManager.DisablePlayerControl();
+		menuOpened = true;
+		Time.timeScale = 0;
+		ingameMenu.SetActive(true);
+		continueButton.gameObject.SetActive(false);
+		tutorialButton.gameObject.SetActive(false);
 		gameOverImage.enabled = true;
 	}
 
 	IEnumerator ResetDoubleTapInit(){
-		yield return new WaitForSecondsRealtime(timeBetweenTaps+0.05f);
+		yield return new WaitUntil(() => Time.unscaledTime - lastTapTime > timeBetweenTaps);
 		doubleTapInitialized = false;
+		counter = 0;
 		firstTapID = -1;
+		yield return null;
 	}
 
-	IEnumerator SlowDownTime(float startTime){
-		while(Time.timeScale >= 0.1f){
-			Time.timeScale -= Time.deltaTime / 1.5f;
+	IEnumerator SlowDownTime(float timeToStop){
+		for(float t = 0f; t < timeToStop; t = t + Time.unscaledDeltaTime){
+			Time.timeScale = Mathf.Lerp(1f, 0f, t / timeToStop);
 			yield return null;
 		}
 		ForceGameOverEnd();

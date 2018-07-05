@@ -32,7 +32,7 @@ public class SmallParticleRelease : MonoBehaviour {
 		transform.Translate(0,0,-1);
 		minXRotation = transform.eulerAngles.x - 25;
 		maxXRotation = minXRotation + 50;
-		StartSmallParticleRelease(SmallParticleReleaseHandler.smallParticlesToReleaseNext);
+		StartSmallParticleRelease(NewGameManager.instance.smallParticleReleaseHandler.smallParticlesToReleaseNext);
 	}
 
 	public void StartSmallParticleRelease(int amountParticlesToRelease){
@@ -58,8 +58,8 @@ public class SmallParticleRelease : MonoBehaviour {
 
 	public bool IsFinished(){
 		if(smallParticlesList.Count <= 0 || smallParticlesAlive <= 0){
-			SmallParticleReleaseHandler.ComputeSmallParticlesToReleaseNext(smallParticlesReleased, smallParticlesCaught);
-			SmallParticleReleaseHandler.SmallParticleReleaseFinished(gameObject);
+			NewGameManager.instance.smallParticleReleaseHandler.ComputeSmallParticlesToReleaseNext(smallParticlesReleased, smallParticlesCaught);
+			NewGameManager.instance.smallParticleReleaseHandler.SmallParticleReleaseFinished(gameObject);
 			Destroy(gameObject);
 			return true;
 		} else {

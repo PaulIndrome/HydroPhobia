@@ -15,6 +15,7 @@ public class BigParticle : MonoBehaviour {
 	private GameObject smallParticleReleaserPrefab;
 
 	private ParticleSystem[] ps;
+	private Rigidbody rigBod;
 	public MeshRenderer meshRenderer;
 	public Material bigParticleNormalMat, bigParticleDangerousMat;
 	public AnimationCurve blinkingCurve;
@@ -28,6 +29,8 @@ public class BigParticle : MonoBehaviour {
 	}
 
 	public void Start(){
+		rigBod = GetComponent<Rigidbody>();
+
 		if(meshRenderer == null)
 			meshRenderer = GetComponentInChildren<MeshRenderer>();
 			
@@ -46,7 +49,9 @@ public class BigParticle : MonoBehaviour {
 			BigParticleAverted();
 		} else if (collider.GetComponent<PlayerTwoScript>() != null){
 			BigParticleKillsSube();
-		} 
+		} else if (collider.layer == LayerMask.NameToLayer("CageBottom")){
+			Debug.Log("Big Particle not caught");
+		}
 	}
 
 	public void ToggleDangerousParticle(bool activeDanger){
@@ -97,15 +102,21 @@ public class BigParticle : MonoBehaviour {
 	IEnumerator MoveAndCheckForOutOfScreen(){
 		float startTime = Time.time;
 		while(gameObject.activeSelf){
-			transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + Mathf.Sin(Time.time - startTime)*0.5f, transform.position.y - fallingDelta, 0), Time.deltaTime);
+			rigBod.MovePosition(Vector3.Lerp(transform.position, new Vector3(transform.position.x + Mathf.Sin(Time.time - startTime)*0.5f, transform.position.y - fallingDelta, 0), Time.deltaTime));
+			//transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + Mathf.Sin(Time.time - startTime)*0.5f, transform.position.y - fallingDelta, 0), Time.deltaTime);
 			if(transform.position.y <= -6){
+				/*
 				//every big particle that is not caught reduces Bube's and Sube's speed
 				NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.8f);
 				NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(1, 0.9f);
-				
+				*/
+				//every big particle not caught hurts Sube more than Bube
+				PlayerManager.HealthImpact(PlayerEnum.Sube, -15);
+				PlayerManager.HealthImpact(PlayerEnum.Bube, -3);
 				NewGameManager.instance.bigParticleReleaseHandler.RemoveFromList(this);
 				Destroy(gameObject);
 			}
+			
 			yield return null;
 		}
 		yield break;

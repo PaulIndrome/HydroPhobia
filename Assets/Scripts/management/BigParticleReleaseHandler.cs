@@ -33,6 +33,8 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 
 		spawnPosY = transform.position.y;
 
+		bigParticleScoreText.text = "0";
+
 		StartCoroutine(spawnBigParticles());
 	}
 
@@ -57,8 +59,8 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 	public void UpdateBigParticles(){
 		foreach(BigParticle bp in bigParticleList){
 			if(bp != null){
-				bp.ToggleDangerousParticle(dangerousBigParticlesActive);
 				bp.SetFallingDelta(fallingDelta);
+				bp.ToggleDangerousParticle(dangerousBigParticlesActive);
 			} else {
 				continue;
 			}
@@ -67,7 +69,7 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 
 	public void UpdateBigParticleScore(int minusPlus){
 		bigParticleScore += minusPlus;
-		bigParticleScoreText.text = "" + bigParticleScore;
+		bigParticleScoreText.text = "" + Mathf.Clamp(bigParticleScore, 0, 99999);
 	}
 
 	public void RemoveFromList(BigParticle bp){
