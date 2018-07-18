@@ -99,6 +99,11 @@ public class BigParticle : MonoBehaviour {
 		dangerousParticle = false;
 		Destroy(gameObject);
 	}
+
+	public void PlayParticleSystem(int index){
+		ps[index].Play();
+	}
+
 	IEnumerator MoveAndCheckForOutOfScreen(){
 		float startTime = Time.time;
 		while(gameObject.activeSelf){
@@ -128,11 +133,10 @@ public class BigParticle : MonoBehaviour {
 		while(dangerousParticle){
 			timeElapsed += Time.deltaTime;
 			meshRenderer.material.Lerp(bigParticleNormalMat, bigParticleDangerousMat, blinkingCurve.Evaluate(timeElapsed % 1));
-			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1.5f,1.5f,1.5f), timeElapsed);
+			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1.5f,1.5f,1.5f), timeElapsed % 1);
 			yield return null;
 		}
 		meshRenderer.material = bigParticleNormalMat;
-		ps[2].Play();
 		transform.localScale = Vector3.one;
 		yield break;
 	}

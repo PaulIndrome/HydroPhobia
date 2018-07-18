@@ -21,9 +21,11 @@ public class PlayerOneScript : Player {
 		/*
 		//every big particle that is caught by Bube increases Sube's speed
 		NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 1.05f);
-		//every big particle that is caught by Bube increases their spawn rate
-		NewGameManager.instance.bigParticleReleaseHandler.delayBetweenSpawns *= 0.95f;
 		*/
+		//every big particle that is caught by Bube increases their spawn rate
+		NewGameManager.instance.bigParticleReleaseHandler.DelayBetweenSpawns *= 0.96f;
+		//every big particle caught by Bube heals Sube
+		PlayerManager.HealthImpact(PlayerEnum.Sube, 1);
 		//increase big particle score
 		NewGameManager.instance.bigParticleReleaseHandler.UpdateBigParticleScore(1);
 	}
@@ -32,9 +34,9 @@ public class PlayerOneScript : Player {
 		/*
 		//every small particle that is caught by Bube reduces Sube's speed
 		NewGameManager.instance.playerManager.ChangePlayerLerpSpeed(2, 0.85f);
-		//every small particle that is caught by Bube decreases the big particle spawn rate
-		NewGameManager.instance.bigParticleReleaseHandler.delayBetweenSpawns *= 1.05f;
 		*/
+		//every small particle that is caught by Bube decreases the big particle spawn rate
+		NewGameManager.instance.bigParticleReleaseHandler.DelayBetweenSpawns *= 1.04f;
 		//decrease small particle score
 		NewGameManager.instance.smallParticleReleaseHandler.UpdateSmallParticleScore(-1);
 		//every small particle caught by Bube hurts both

@@ -41,9 +41,7 @@ public class DoubleTapForMenu : MonoBehaviour, IPointerDownHandler {
 		doubleTapInitialized = false;
 		counter = 0;
 		menuOpened = !menuOpened;
-		foreach(Transform child in mainMenu.transform){
-			child.gameObject.SetActive(menuOpened);
-		}
+		mainMenu.gameObject.SetActive(menuOpened);
 	}
 
 	IEnumerator ResetDoubleTapInit(){

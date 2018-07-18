@@ -97,7 +97,6 @@ public class GamePauseHandler : MonoBehaviour, IPointerDownHandler {
 	}
 
 	public void ForceGameOverEnd(){
-		NewGameManager.instance.playerManager.DisablePlayerControl();
 		menuOpened = true;
 		Time.timeScale = 0;
 		ingameMenu.SetActive(true);

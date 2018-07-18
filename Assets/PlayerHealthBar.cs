@@ -58,8 +58,9 @@ public class PlayerHealthBar : MonoBehaviour {
 
 	IEnumerator FlashHealthBG(Color flashColor, bool shake){
 		healthBarBG.color = flashColor;
-		if(shake) iTween.ShakePosition(gameObject, Vector3.one * 20f, blinkTime);
+		if(shake) iTween.ShakePosition(gameObject, Vector3.one * 15f, blinkTime);
 		for(float t = 0;t < blinkTime; t = t + Time.deltaTime){
+			if(Time.timeScale == 0) break;
 			healthBarBG.color = Color.Lerp(flashColor, originalColor, t / blinkTime);
 			yield return null;
 		}

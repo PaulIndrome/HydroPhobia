@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class BigParticleReleaseHandler : MonoBehaviour {
 
+	public float DelayBetweenSpawns {
+		get { return delayBetweenSpawns; }
+		set {
+			delayBetweenSpawns = Mathf.Clamp(value, 1.5f, 2.5f);
+		}
+	}
+
 	public float delayBetweenSpawns, xMin, xMax, spawnPosX; 
 	public float fallingDelta;
 	public float bigParticleScore;
@@ -22,8 +29,8 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 	void Start(){
 		if(!bigParticlePrefab)
 			Debug.Log("No prefab for the big particle set");
-		if(delayBetweenSpawns == 0)
-			delayBetweenSpawns = 2.0f;
+		if(DelayBetweenSpawns == 0)
+			DelayBetweenSpawns = 2.0f;
 		if(fallingDelta == 0)
 			fallingDelta = 1.0f;
 		if(xMin == 0 || xMax == 0){
@@ -61,6 +68,8 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 			if(bp != null){
 				bp.SetFallingDelta(fallingDelta);
 				bp.ToggleDangerousParticle(dangerousBigParticlesActive);
+				if(dangerousBigParticlesActive) bp.PlayParticleSystem(1);
+				else bp.PlayParticleSystem(2);
 			} else {
 				continue;
 			}
@@ -79,7 +88,7 @@ public class BigParticleReleaseHandler : MonoBehaviour {
 
 	IEnumerator spawnBigParticles(){
 		while(!NewGameManager.gameOver){
-			yield return new WaitForSeconds(delayBetweenSpawns);
+			yield return new WaitForSeconds(DelayBetweenSpawns);
 			SpawnBigParticle();
 		}
 		yield break;
